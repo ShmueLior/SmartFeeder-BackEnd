@@ -1,9 +1,9 @@
+require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('./initializers/mongoose');
-
 var indexRouter = require('./routes/index');
 var usersApiRouter = require('./routes/users');
 
