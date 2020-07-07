@@ -23,17 +23,21 @@ router.post('/signup', async function (req, res, next) {
 /*POST /api/v1.0/users/login */
 router.post('/login', async function (req, res, next) {
   const user = await User.findOne({ email: req.body.email });
-  const valid = await user.checkPassword(req.body.password);
-  if (valid) {
-    const accessToken = jwt.sign(
-      { id: user._id },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '7d' }
-    );
-    return res.status(200).send(accessToken);
-  }
-  else {
-    return res.status(400).send('email or password are incorrect');
+  if (user === null) {
+    return res.status(401).send('invalid email');
+  } else {
+    const valid = await user.checkPassword(req.body.password);
+    if (valid) {
+      const accessToken = jwt.sign(
+        { id: user._id },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: '7d' }
+      );
+      return res.status(200).send(accessToken);
+    }
+    else {
+      return res.status(401).send('invalid password');
+    }
   }
 
 });
