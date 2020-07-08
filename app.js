@@ -6,6 +6,7 @@ var logger = require('morgan');
 const mongoose = require('./initializers/mongoose');
 var indexRouter = require('./routes/index');
 var usersApiRouter = require('./routes/users');
+var arduinoApiRouter = require('./routes/arduino');
 
 
 var app = express();
@@ -26,6 +27,7 @@ app.use("/api", function (req, res, next) {
 
 app.use('/', indexRouter);
 app.use('/api/v1.0/users', usersApiRouter);
+app.use('/api/v1.0/arduino', arduinoApiRouter);
 
 
 module.exports = app;

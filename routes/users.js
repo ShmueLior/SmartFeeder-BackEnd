@@ -4,15 +4,15 @@ const User = require('../models/user');
 var jwt = require('jsonwebtoken');
 
 
-function verifyToken(req, res,next){
+function verifyToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];
 
-  if (typeof bearerHeader !== 'undefined'){
+  if (typeof bearerHeader !== 'undefined') {
     const bearer = bearerHeader.split(' ');
     const bearerToken = bearer[1];
     req.token = bearerToken;
     next();
-  }else{
+  } else {
     res.status(403).send('Unathorized!');
     // res.send('unathorized token');
   }
@@ -21,11 +21,11 @@ function verifyToken(req, res,next){
 
 /* GET users listing. */
 router.get('/authorized_request', verifyToken, function (req, res, next) {
-  jwt.verify(req.token, "SECRET_KEY", (err, authData)=> {
-    if (err){
+  jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, authData) => {
+    if (err) {
       res.status(403).send('authorization error');
     }
-    else{
+    else {
       res.json({
         message: 'authorized',
         authData
@@ -57,7 +57,7 @@ router.post('/login', async function (req, res, next) {
     if (valid) {
       const accessToken = jwt.sign(
         { id: user._id },
-        "SECRET_KEY",
+        process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '7d' }
       );
       return res.status(200).send(accessToken);
@@ -69,5 +69,25 @@ router.post('/login', async function (req, res, next) {
 
 });
 
+/*DELETE /api/v1.0/users/:email */
+router.delete('/:email', function (req, res, next) {
+  User.findOneAndRemove({ email: req.params.email }).exec().then(doc => {
+    if (!doc) { return res.status(404).end(); }
+    return res.status(204).end();
+  })
+    .catch(err => next(err));
+
+});
+
+/*GET /api/v1.0/users */
+router.get('/', function (req, res, next) {
+  User.find({}, function (err, users) {
+    if (err) {
+      return res.status(400).send(err.message);
+    } else {
+      return res.status(200).send(users);
+    }
+  })
+});
 
 module.exports = router;
