@@ -3,8 +3,35 @@ var router = express.Router();
 const User = require('../models/user');
 var jwt = require('jsonwebtoken');
 
+
+function verifyToken(req, res,next){
+  const bearerHeader = req.headers['authorization'];
+
+  if (typeof bearerHeader !== 'undefined'){
+    const bearer = bearerHeader.split(' ');
+    const bearerToken = bearer[1];
+    req.token = bearerToken;
+    next();
+  }else{
+    res.status(403).send('Unathorized!');
+    // res.send('unathorized token');
+  }
+}
+
+
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get('/authorized_request', verifyToken, function (req, res, next) {
+  jwt.verify(req.token, "SECRET_KEY", (err, authData)=> {
+    if (err){
+      res.status(403).send('authorization error');
+    }
+    else{
+      res.json({
+        message: 'authorized',
+        authData
+      })
+    }
+  });
   res.send('respond with a resource');
 });
 
@@ -30,7 +57,7 @@ router.post('/login', async function (req, res, next) {
     if (valid) {
       const accessToken = jwt.sign(
         { id: user._id },
-        process.env.ACCESS_TOKEN_SECRET,
+        "SECRET_KEY",
         { expiresIn: '7d' }
       );
       return res.status(200).send(accessToken);
@@ -41,5 +68,6 @@ router.post('/login', async function (req, res, next) {
   }
 
 });
+
 
 module.exports = router;
