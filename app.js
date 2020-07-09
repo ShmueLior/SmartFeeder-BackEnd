@@ -4,9 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('./initializers/mongoose');
+const passport = require('passport');
+require('./initializers/passport');
+var flash = require('connect-flash');
 var indexRouter = require('./routes/index');
 var usersApiRouter = require('./routes/users');
 var arduinoApiRouter = require('./routes/arduino');
+var dogsApiRouter = require('./routes/dogs');
 
 
 var app = express();
@@ -24,10 +28,13 @@ app.use("/api", function (req, res, next) {
     );
     next();
 });
+app.use(flash());
+app.use(passport.initialize());
 
 app.use('/', indexRouter);
 app.use('/api/v1.0/users', usersApiRouter);
 app.use('/api/v1.0/arduino', arduinoApiRouter);
+app.use('/api/v1.0/dogs', dogsApiRouter);
 
 
 module.exports = app;

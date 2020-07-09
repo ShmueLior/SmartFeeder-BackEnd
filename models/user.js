@@ -5,15 +5,15 @@ var uniqueValidator = require('mongoose-unique-validator');
 const saltRounds = 10;
 
 const userSchema = new mongoose.Schema({
-    fname: { type: String, required: true },
-    lname: { type: String, required: true },
+    username: { type: String, required: true },
     email: {
         type: String,
         required: true,
         unique: true,
     },
     password: { type: String, required: true },
-    phone: { type: String }
+    phone: { type: String },
+    flags: { type: Map, of: Boolean, default: { dropFood: false } }
 });
 
 userSchema.plugin(uniqueValidator);
