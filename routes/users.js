@@ -20,12 +20,15 @@ function verifyToken(req, res,next){
 
 
 /* GET users listing. */
+
+// template of the rest request
 router.get('/authorized_request', verifyToken, function (req, res, next) {
-  jwt.verify(req.token, "SECRET_KEY", (err, authData)=> {
+  jwt.verify(req.token, process.env.ACCESS_TOKEN_SECRET, (err, authData)=> {
     if (err){
       res.status(403).send('authorization error');
     }
     else{
+      // request authorized
       res.json({
         message: 'authorized',
         authData
@@ -57,7 +60,7 @@ router.post('/login', async function (req, res, next) {
     if (valid) {
       const accessToken = jwt.sign(
         { id: user._id },
-        "SECRET_KEY",
+        process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '7d' }
       );
       return res.status(200).send(accessToken);
