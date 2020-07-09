@@ -24,7 +24,7 @@ router.post('/dropfood', passport.authenticate('jwt', { session: false }), async
         let user = await User.findOne(filter);
         user.flags.set('dropFood', true);
         await user.save();
-        res.status(200);
+        res.status(200).send("flag up");
     } catch (err) {
         res.status(400).send(err.message);
     }
