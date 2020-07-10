@@ -52,7 +52,7 @@ router.post('/new', passport.authenticate('jwt', { session: false }), upload.sin
     });
     try {
         await dog.save();
-        res.status(201).send('Created');
+        res.status(201).send(dog);
     } catch (err) {
         res.status(400).send(err.message);
         next();
