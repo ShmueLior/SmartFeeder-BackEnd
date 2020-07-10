@@ -62,6 +62,7 @@ router.get('/', function (req, res, next) {
       return res.status(400).send(err.message);
     } else {
       return res.status(200).send(users);
+      
     }
   })
 });
