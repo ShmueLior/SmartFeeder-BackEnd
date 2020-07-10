@@ -7,6 +7,7 @@ const dogSchema = new mongoose.Schema({
     gender: { type: String },
     birthDate: { type: Date },
     ownerID: { type: Schema.Types.ObjectId, ref: 'User' },
+    image: { type: String },
 });
 
 dogSchema.plugin(uniqueValidator);
