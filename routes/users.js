@@ -91,11 +91,6 @@ router.post('/:id/:flag', async  function (req, res, next) {
     res.status(400).send(err.message);
 }
 
-
-
-  // const user = await User.findById(userId).lean();  
-  return res.end(JSON.stringify(flag));
-
 });
 
 
