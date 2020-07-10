@@ -67,4 +67,16 @@ router.get('/', function (req, res, next) {
   })
 });
 
+
+//-----------------For Arduino only!--------------------
+router.get('/:id', async  function (req, res, next) {
+  const userId = req.params.id;
+  const user = await User.findById(userId).lean();  
+  return res.end(JSON.stringify(user.flags));
+
+});
+
+
+
+
 module.exports = router;
