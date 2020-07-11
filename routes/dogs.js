@@ -72,4 +72,32 @@ router.post('/dropfood', passport.authenticate('jwt', { session: false }), async
     }
 });
 
+/*POST /api/v1.0/dogs/newVaccine/:id */
+router.post('/newVaccine/:id', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
+    const dog = await Dog.findOne({ _id: req.params.id });
+    if (dog === null) {
+        res.status(404).send({ message: 'Dog not found in DB' });
+    }
+    else {
+        try {
+            dog.vaccines.push(req.body);
+            await dog.save();
+            res.status(200).send(dog.vaccines);
+        } catch (err) {
+            res.status(400).send({ message: err.message });
+        }
+    }
+});
+
+/*GET /api/v1.0/dogs/vaccines/:id */
+router.get('/vaccines/:id', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
+    const dog = await Dog.findOne({ _id: req.params.id });
+    if (dog === null) {
+        res.status(404).send({ message: 'Dog not found in DB' });
+    }
+    else {
+        res.status(200).send(dog.vaccines);
+    }
+});
+
 module.exports = router;
