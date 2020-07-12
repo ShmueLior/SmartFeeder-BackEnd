@@ -100,4 +100,19 @@ router.get('/vaccines/:id', passport.authenticate('jwt', { session: false }), as
     }
 });
 
+/*POST /api/v1.0/dogs/newimage/:id */
+router.post('/newimage/:id', passport.authenticate('jwt', { session: false }), upload.single('image'), async function (req, res, next) {
+    const filter = { _id: req.params.id };
+    const update = { image: req.file.path };
+    try {
+        let dog = await Dog.findOneAndUpdate(filter, update, { new: true });
+        if (dog === null) {
+            throw new Error('Dog not found in DB');
+        }
+        res.status(201).send({ imagePath: dog.image });
+    } catch (err) {
+        res.status(400).send(err.message);
+    }
+});
+
 module.exports = router;
