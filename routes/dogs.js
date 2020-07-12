@@ -50,7 +50,7 @@ router.post('/new', passport.authenticate('jwt', { session: false }), upload.sin
         gender: req.body.gender,
         birthDate: req.body.birthDate,
         ownerID: req.user._id,
-       // image: req.file.path,
+        image: (req.file && req.file.path) ? req.file.path : undefined
     });
     
         await dog.save();
