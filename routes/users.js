@@ -17,6 +17,7 @@ router.post('/signup', async function (req, res, next) {
   }
 });
 
+
 /*POST /api/v1.0/users/login */
 router.post('/login', async function (req, res, next) {
   const user = await User.findOne({ email: req.body.email });
