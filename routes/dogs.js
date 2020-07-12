@@ -43,14 +43,16 @@ router.get('/', passport.authenticate('jwt', { session: false }), async function
 
 /*POST /api/v1.0/dogs/new */
 router.post('/new', passport.authenticate('jwt', { session: false }), upload.single('image'), async function (req, res, next) {
+    
+    try {
     const dog = new Dog({
         name: req.body.name,
         gender: req.body.gender,
         birthDate: req.body.birthDate,
         ownerID: req.user._id,
-        image: req.file.path,
+       // image: req.file.path,
     });
-    try {
+    
         await dog.save();
         res.status(201).send(dog);
     } catch (err) {
