@@ -62,6 +62,27 @@ router.post('/new', passport.authenticate('jwt', { session: false }), upload.sin
     }
 });
 
+/*DELETE /api/v1.0/dogs/:id */
+router.delete('/:id', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
+    Dog.findOneAndRemove({ _id: req.params.id }).exec().then(doc => {
+        if (!doc) { return res.status(404).end(); }
+        return res.status(204).end();
+    })
+        .catch(err => next(err));
+});
+
+/*PUT /api/v1.0/dogs/update/:id */
+router.put('/update/:id', passport.authenticate('jwt', { session: false }), upload.single('image'), async function (req, res, next) {
+    try {
+        const update = req.body;
+        const filter = { _id: req.params.id };
+        let dog = await Dog.findOneAndUpdate(filter, update, { new: true });
+        res.status(200).send(dog);
+    } catch (err) {
+        res.status(400).send(err.message);
+    }
+});
+
 /*POST /api/v1.0/dogs/dropfood/:id */
 router.post('/dropfood/:id', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
     try {
