@@ -108,7 +108,7 @@ router.post('/makenoise/:id', passport.authenticate('jwt', { session: false }), 
         if (dog == undefined || dog.ownerID != user.id) {
             throw new Error('Dog ID not found')
         }
-        user.flags.set('makenoise', true);
+        user.flags.set('makeNoise', true);
         await user.save();
         res.status(200).send("make noise flag up");
     } catch (err) {
