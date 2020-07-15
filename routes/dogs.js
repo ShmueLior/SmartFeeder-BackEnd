@@ -87,8 +87,9 @@ router.put('/update/:id', passport.authenticate('jwt', { session: false }), uplo
 router.post('/dropfood/:id', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
     try {
         let user = await User.findOne({ _id: req.user._id });
+        // let dog = await Dog.findOne({ _id: "5f0f7a81877e0239286ec565" }); 
         let dog = await Dog.findOne({ _id: req.params.id });
-        if (dog == undefined || dog.ownerID != user) {
+        if (dog == undefined || dog.ownerID != user.id) {
             throw new Error('Dog ID not found')
         }
         user.flags.set('dropFood', true);
@@ -104,7 +105,7 @@ router.post('/makenoise/:id', passport.authenticate('jwt', { session: false }), 
     try {
         let user = await User.findOne({ _id: req.user._id });
         let dog = await Dog.findOne({ _id: req.params.id });
-        if (dog == undefined || dog.ownerID != user) {
+        if (dog == undefined || dog.ownerID != user.id) {
             throw new Error('Dog ID not found')
         }
         user.flags.set('makenoise', true);
