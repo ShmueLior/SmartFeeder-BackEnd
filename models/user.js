@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     },
     password: { type: String, required: true },
     phone: { type: String },
-    flags: { type: Map, of: Boolean, default: { dropFood: false, makenoise: false } }
+    flags: { type: Map, of: Boolean, default: { dropFood: false, makeNoise: false } }
 });
 
 userSchema.plugin(uniqueValidator);
