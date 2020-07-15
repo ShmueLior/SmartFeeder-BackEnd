@@ -5,6 +5,7 @@ const Dog = require('../models/dog');
 const User = require('../models/user');
 const passport = require('passport');
 const multer = require('multer');
+const { use } = require('passport');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         let path = './uploads/';
@@ -43,16 +44,16 @@ router.get('/', passport.authenticate('jwt', { session: false }), async function
 
 /*POST /api/v1.0/dogs/new */
 router.post('/new', passport.authenticate('jwt', { session: false }), upload.single('image'), async function (req, res, next) {
-    
+
     try {
-    const dog = new Dog({
-        name: req.body.name,
-        gender: req.body.gender,
-        birthDate: req.body.birthDate,
-        ownerID: req.user._id,
-        image: (req.file && req.file.path) ? req.file.path : undefined
-    });
-    
+        const dog = new Dog({
+            name: req.body.name,
+            gender: req.body.gender,
+            birthDate: req.body.birthDate,
+            ownerID: req.user._id,
+            image: (req.file && req.file.path) ? req.file.path : undefined
+        });
+
         await dog.save();
         res.status(201).send(dog);
     } catch (err) {
@@ -61,14 +62,33 @@ router.post('/new', passport.authenticate('jwt', { session: false }), upload.sin
     }
 });
 
-/*POST /api/v1.0/dogs/dropfood */
-router.post('/dropfood', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
+/*POST /api/v1.0/dogs/dropfood/:id */
+router.post('/dropfood/:id', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
     try {
-        const filter = { _id: req.user._id };
-        let user = await User.findOne(filter);
+        let user = await User.findOne({ _id: req.user._id });
+        let dog = await Dog.findOne({ _id: req.params.id });
+        if (dog == undefined || dog.ownerID != user) {
+            throw new Error('Dog ID not found')
+        }
         user.flags.set('dropFood', true);
         await user.save();
-        res.status(200).send("flag up");
+        res.status(200).send("dropfood flag up");
+    } catch (err) {
+        res.status(400).send(err.message);
+    }
+});
+
+/*POST /api/v1.0/dogs/makenoise/:id */
+router.post('/makenoise/:id', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
+    try {
+        let user = await User.findOne({ _id: req.user._id });
+        let dog = await Dog.findOne({ _id: req.params.id });
+        if (dog == undefined || dog.ownerID != user) {
+            throw new Error('Dog ID not found')
+        }
+        user.flags.set('makenoise', true);
+        await user.save();
+        res.status(200).send("make noise flag up");
     } catch (err) {
         res.status(400).send(err.message);
     }
