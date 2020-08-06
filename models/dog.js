@@ -12,6 +12,8 @@ const dogSchema = new mongoose.Schema({
         name: { type: String },
         date: { type: Date },
     }],
+    flags: { type: Map, of: Boolean, default: { dropFood: false, makeNoise: false } },
+    espSerailNumber: { type: String, required: true },
 });
 
 dogSchema.plugin(uniqueValidator);
