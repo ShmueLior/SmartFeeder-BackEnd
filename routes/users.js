@@ -63,38 +63,9 @@ router.get('/', function (req, res, next) {
       return res.status(400).send(err.message);
     } else {
       return res.status(200).send(users);
-      
+
     }
   })
 });
-
-
-//-----------------For Arduino only!--------------------
-router.get('/:id', async  function (req, res, next) {
-  const userId = req.params.id;
-  const user = await User.findById(userId).lean();  
-  return res.end(JSON.stringify(user.flags));
-
-});
-
-//-----------------For Arduino only!--------------------
-router.post('/:id/:flag', async  function (req, res, next) {
-  const userId = req.params.id;
-  const flag = req.params.flag;
-
-  try {
-    const filter = { _id: userId };
-    let user = await User.findOne(filter);
-    user.flags.set(flag, false);
-    await user.save();
-    res.status(200).send("drop food flag is down!");
-} catch (err) {
-    res.status(400).send(err.message);
-}
-
-});
-
-
-
 
 module.exports = router;
