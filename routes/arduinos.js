@@ -27,11 +27,14 @@ router.post('/new', async function (req, res, next) {
 
 /*GET /api/v1.0/arduinos/:arduinoId */
 router.get('/:arduinoId', async function (req, res, next) {
-    const arduinoId = req.params.arduinoId;
+    const arduinoIdReq = req.params.arduinoId;
     try {
-        const arduino = await Arduino.findOne({ arduinoId: arduinoId });
+        const arduino = await Arduino.findOne({ arduinoId: arduinoIdReq });
         if (arduino == null) {
             res.status(404).send({ message: "arduino ID not found" });
+        }
+        else {
+            res.status(200);
         }
     } catch (err) {
         res.status(400).send(err.message);
