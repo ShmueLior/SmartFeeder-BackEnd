@@ -34,7 +34,7 @@ router.get('/:arduinoId', async function (req, res, next) {
             res.status(404).send({ message: "arduino ID not found" });
         }
         else {
-            res.status(200);
+            res.status(200).send({ message: "Success!" });
         }
     } catch (err) {
         res.status(400).send(err.message);
