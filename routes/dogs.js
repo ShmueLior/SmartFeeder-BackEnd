@@ -77,7 +77,9 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), async fu
 router.put('/update/:id', passport.authenticate('jwt', { session: false }), upload.single('image'), async function (req, res, next) {
     try {
         const update = req.body;
-        update.image = (req.file && req.file.path) ? req.file.path : undefined;
+        if (req.file && req.file.path) {
+            update.image = req.file.path
+        }
         const filter = { _id: req.params.id };
         let dog = await Dog.findOneAndUpdate(filter, update, { new: true });
         res.status(200).send(dog);

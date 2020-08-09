@@ -17,9 +17,6 @@ router.post('/new', async function (req, res, next) {
             arduinoId: req.body.arduinoId,
         });
 
-        console.log(arduino);
-        console.log(req);
-
         await arduino.save();
         res.status(201).send(arduino);
     } catch (err) {
