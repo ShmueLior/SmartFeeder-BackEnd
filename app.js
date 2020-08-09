@@ -9,7 +9,7 @@ require('./initializers/passport');
 var flash = require('connect-flash');
 var indexRouter = require('./routes/index');
 var usersApiRouter = require('./routes/users');
-var arduinoApiRouter = require('./routes/arduino');
+var arduinoApiRouter = require('./routes/arduinos');
 var dogsApiRouter = require('./routes/dogs');
 
 
@@ -34,7 +34,7 @@ app.use(passport.initialize());
 
 app.use('/', indexRouter);
 app.use('/api/v1.0/users', usersApiRouter);
-app.use('/api/v1.0/arduino', arduinoApiRouter);
+app.use('/api/v1.0/arduinos', arduinoApiRouter);
 app.use('/api/v1.0/dogs', dogsApiRouter);
 
 
