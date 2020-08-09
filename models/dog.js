@@ -10,6 +10,7 @@ const dogSchema = new mongoose.Schema({
     birthDate: { type: Date },
     ownerID: { type: Schema.Types.ObjectId, ref: 'User' },
     image: { type: String },
+    breed: { type: String },
     vaccines: [{
         name: { type: String },
         date: { type: Date },
