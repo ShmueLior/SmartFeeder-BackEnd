@@ -52,7 +52,7 @@ router.post('/new', passport.authenticate('jwt', { session: false }), upload.sin
             birthDate: req.body.birthDate,
             ownerID: req.user._id,
             image: (req.file && req.file.path) ? req.file.path : undefined,
-            espSerailNumber: req.body.espSerailNumber,
+            espSerialNumber: req.body.espSerialNumber,
         });
 
         await dog.save();
