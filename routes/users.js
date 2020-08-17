@@ -68,4 +68,27 @@ router.get('/', function (req, res, next) {
   })
 });
 
+/*For Debug only! */
+/*POST /api/v1.0/users/newNotification */
+router.post('/newNotification', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
+  try {
+    let user = await User.findOne({ _id: req.user._id });
+    user.notifications.push(new Object({ dogInfo: req.body.dogInfo, titel: req.body.titel, body: req.body.body, date: Date.now() }));
+    await user.save();
+    res.status(201).send("message created");
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+
+/*GET /api/v1.0/users/notification */
+router.get('/notification', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
+  try {
+    let user = await User.findOne({ _id: req.user._id });
+    res.status(200).send(user.notifications);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+
 module.exports = router;

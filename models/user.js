@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 var uniqueValidator = require('mongoose-unique-validator');
+const Schema = mongoose.Schema;
 
 const saltRounds = 10;
 
@@ -13,6 +14,12 @@ const userSchema = new mongoose.Schema({
     },
     password: { type: String, required: true },
     phone: { type: String },
+    notifications: [{
+        dogInfo: { type: Schema.Types.ObjectId, ref: 'Dog' },
+        titel: { type: String },
+        body: { type: String },
+        date: { type: Date },
+    }],
 });
 
 userSchema.plugin(uniqueValidator);
