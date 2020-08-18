@@ -54,6 +54,7 @@ router.post('/new', passport.authenticate('jwt', { session: false }), upload.sin
             image: (req.file && req.file.path) ? req.file.path : undefined,
             breed: req.body.breed,
             espSerialNumber: req.body.espSerialNumber,
+            gramPerMeal: req.body.gramPerMeal ? req.body.gramPerMeal : 200,
         });
 
         await dog.save();
@@ -97,6 +98,7 @@ router.post('/dropfood/:id', passport.authenticate('jwt', { session: false }), a
             throw new Error('Dog ID not found')
         }
         dog.flags.set('dropFood', true);
+        dog.howManyDropFoodToDay += dog.gramPerMeal;
         await dog.save();
         res.status(200).send("dropfood flag up");
     } catch (err) {
@@ -162,5 +164,23 @@ router.post('/newimage/:id', passport.authenticate('jwt', { session: false }), u
         res.status(400).send(err.message);
     }
 });
+
+/*
+/*POST /api/v1.0/dogs/bowlStatistic/:id/:filter 
+router.get('/bowlStatistic/:id/:filter', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
+    try {
+        let user = await User.findOne({ _id: req.user._id });
+        let dog = await Dog.findOne({ _id: req.params.id });
+        if (dog == undefined || dog.ownerID != user.id) {
+            throw new Error('Dog ID not found')
+        }
+
+        let res = [].fill.call({ length: req.params.filter }, null);
+
+    } catch (err) {
+        res.status(400).send(err.message);
+    }
+});
+*/
 
 module.exports = router;

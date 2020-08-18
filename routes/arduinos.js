@@ -53,6 +53,41 @@ router.get('/:arduinoId/flags', async function (req, res, next) {
     return res.end(JSON.stringify(dog.flags));
 });
 
+/*POST /api/v1.0/arduinos/:arduinoId/flags */
+router.post('/:arduinoId/flags', async function (req, res, next) {
+    const arduinoId = req.params.arduinoId;
+    let dog = await Dog.findOne({ espSerialNumber: arduinoId });
+    let user = await User.findOne({ _id: dog.ownerID });
+    if (dog == null) {
+        return res.status(404).send({ message: "No dog is registered for this device" });
+    }
+    try {
+        if (req.body.isContainerEmpty == true) {
+            user.notifications.push(new Object({ dogInfo: dog._id, titel: "The container is about to run out", body: "Container is about to run out in 2 more days. Call the supplier to order a new Bonzo today.", date: Date.now() }));
+            await user.save();
+        }
+        if (req.body.bowlWeight != null) {
+            //save statistic
+            let howMuchFoodHeAteToDay = dog.howManyDropFoodToDay - req.body.bowlWeight;
+            dog.bowlStatistic.push(new Object({ date: Date.now(), howMuchHeAte: howMuchFoodHeAteToDay }));
+
+            if (howMuchFoodHeAteToDay == 0) {
+                user.notifications.push(new Object({ dogInfo: dog._id, titel: "Alert!", body: `${dog.name} did not ate today at all`, date: Date.now() }));
+            }
+
+            //enter new notification of the "sum of the day"
+            user.notifications.push(new Object({ dogInfo: dog._id, titel: "Day summary", body: `${dog.name} ate: ${howMuchFoodHeAteToDay} out of ${dog.howManyDropFoodToDay} gram today`, date: Date.now() }));
+            dog.howManyDropFoodToDay = 0;
+            await dog.save();
+            await user.save();
+
+        }
+    } catch (err) {
+
+    }
+    return res.end(JSON.stringify(dog.flags));
+});
+
 /*POST /api/v1.0/arduinos/:arduinoId/:flag*/
 router.post('/:arduinoId/:flag', async function (req, res, next) {
     const arduinoId = req.params.arduinoId;

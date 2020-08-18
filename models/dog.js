@@ -17,6 +17,12 @@ const dogSchema = new mongoose.Schema({
     }],
     flags: { type: Map, of: Boolean, default: { dropFood: false, makeNoise: false } },
     espSerialNumber: { type: String, required: true },
+    gramPerMeal: { type: Number, default: 200 },
+    howManyDropFoodToDay: { type: Number, default: 0 },
+    bowlStatistic: [{
+        date: { type: Date },
+        howMuchHeAte: { type: Number },
+    }],
 });
 
 dogSchema.pre('save', async function (next) {
