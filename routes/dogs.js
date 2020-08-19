@@ -165,8 +165,8 @@ router.post('/newimage/:id', passport.authenticate('jwt', { session: false }), u
     }
 });
 
-/*
-/*POST /api/v1.0/dogs/bowlStatistic/:id/:filter 
+
+/*POST /api/v1.0/dogs/bowlStatistic/:id/:filter */
 router.get('/bowlStatistic/:id/:filter', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
     try {
         let user = await User.findOne({ _id: req.user._id });
@@ -174,13 +174,38 @@ router.get('/bowlStatistic/:id/:filter', passport.authenticate('jwt', { session:
         if (dog == undefined || dog.ownerID != user.id) {
             throw new Error('Dog ID not found')
         }
+        let outPutArray = null;
+        let counter;
+        let statisticArrSize = dog.bowlStatistic.length;
+        switch (req.params.filter) {
+            case "day":
+                counter = 1;
+                break;
+            case "week":
+                counter = 7;
+                break;
+            case "month":
+                counter = 30;
+                break;
+            case "year":
+                counter = 365;
+                break;
 
-        let res = [].fill.call({ length: req.params.filter }, null);
+            default:
+                throw new Error(`Can not parse params: ${req.params.filter} `);
+                break;
+        }
+        outPutArray = [].fill.call({ length: counter }, null);
+        for (i = statisticArrSize - 1; i >= 0 && counter > 0; i--) {
+            outPutArray[--counter] = dog.bowlStatistic[i];
+        }
+
+        return res.status(200).send(outPutArray);
 
     } catch (err) {
         res.status(400).send(err.message);
     }
 });
-*/
+
 
 module.exports = router;
