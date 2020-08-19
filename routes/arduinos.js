@@ -75,6 +75,10 @@ router.post('/:arduinoId/flags', async function (req, res, next) {
                 user.notifications.push(new Object({ dogInfo: dog._id, titel: "Alert!", body: `${dog.name} did not ate today at all`, date: Date.now() }));
             }
 
+            if (howMuchFoodHeAteToDay = dog.howManyDropFoodToDay) {
+                user.notifications.push(new Object({ dogInfo: dog._id, titel: "Good Day Alert!", body: `${dog.name} ate today all the food you gave him!`, date: Date.now() }));
+            }
+
             //enter new notification of the "sum of the day"
             user.notifications.push(new Object({ dogInfo: dog._id, titel: "Day summary", body: `${dog.name} ate: ${howMuchFoodHeAteToDay} out of ${dog.howManyDropFoodToDay} gram today`, date: Date.now() }));
             dog.howManyDropFoodToDay = 0;
