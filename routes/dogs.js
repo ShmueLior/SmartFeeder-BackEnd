@@ -122,6 +122,22 @@ router.post('/makenoise/:id', passport.authenticate('jwt', { session: false }), 
     }
 });
 
+/*POST /api/v1.0/dogs/containerStatus/:id */
+router.post('/containerStatus/:id', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
+    try {
+        let user = await User.findOne({ _id: req.user._id });
+        let dog = await Dog.findOne({ _id: req.params.id });
+        if (dog == undefined || dog.ownerID != user.id) {
+            throw new Error('Dog ID not found')
+        }
+        dog.flags.set('distance', true);
+        await dog.save();
+        res.status(200).send("distance flag up");
+    } catch (err) {
+        res.status(400).send(err.message);
+    }
+});
+
 /*POST /api/v1.0/dogs/newVaccine/:id */
 router.post('/newVaccine/:id', passport.authenticate('jwt', { session: false }), async function (req, res, next) {
     const dog = await Dog.findOne({ _id: req.params.id });

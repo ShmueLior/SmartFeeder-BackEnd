@@ -15,7 +15,7 @@ const dogSchema = new mongoose.Schema({
         name: { type: String },
         date: { type: Date },
     }],
-    flags: { type: Map, of: Boolean, default: { dropFood: false, makeNoise: false } },
+    flags: { type: Map, of: Boolean, default: { dropFood: false, makeNoise: false, distance: false } },
     espSerialNumber: { type: String, required: true },
     gramPerMeal: { type: Number, default: 200 },
     howManyDropFoodToDay: { type: Number, default: 0 },
