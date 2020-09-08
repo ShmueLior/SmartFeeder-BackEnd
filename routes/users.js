@@ -90,7 +90,7 @@ router.post(
   }
 );
 
-/*GET /api/v1.0/users/notification /:index*/
+/*GET /api/v1.0/users/notification/:index*/
 router.get(
   "/notification/:index",
   passport.authenticate("jwt", { session: false }),

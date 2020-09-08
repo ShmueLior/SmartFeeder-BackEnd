@@ -68,6 +68,8 @@ router.post("/:arduinoId/flags", async function (req, res, next) {
       user.notifications.push(
         new Object({
           dogInfo: dog._id,
+          dogName: dog.name,
+          dogImage: dog.image,
           title: "The container is about to run out",
           body:
             "Container is about to run out in 2 more days. Call the supplier to order a new Bonzo today.",
@@ -89,6 +91,8 @@ router.post("/:arduinoId/flags", async function (req, res, next) {
         user.notifications.push(
           new Object({
             dogInfo: dog._id,
+            dogName: dog.name,
+            dogImage: dog.image,
             title: "Alert!",
             body: `${dog.name} did not ate today at all`,
             date: Date.now(),
@@ -101,6 +105,8 @@ router.post("/:arduinoId/flags", async function (req, res, next) {
         user.notifications.push(
           new Object({
             dogInfo: dog._id,
+            dogName: dog.name,
+            dogImage: dog.image,
             title: "Good Day Alert!",
             body: `${dog.name} ate today all the food you gave him!`,
             date: Date.now(),
@@ -113,6 +119,8 @@ router.post("/:arduinoId/flags", async function (req, res, next) {
       user.notifications.push(
         new Object({
           dogInfo: dog._id,
+          dogName: dog.name,
+          dogImage: dog.image,
           title: "Day summary",
           body: `${dog.name} ate: ${howMuchFoodHeAteToDay} out of ${dog.howManyDropFoodToDay} gram today`,
           date: Date.now(),

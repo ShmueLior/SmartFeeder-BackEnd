@@ -17,6 +17,8 @@ const userSchema = new mongoose.Schema({
   notifications: [
     {
       dogInfo: { type: Schema.Types.ObjectId, ref: "Dog" },
+      dogName: { type: String },
+      dogImage: { type: String },
       title: { type: String },
       body: { type: String },
       date: { type: Date },
