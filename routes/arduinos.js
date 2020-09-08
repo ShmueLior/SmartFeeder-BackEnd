@@ -65,19 +65,25 @@ router.post("/:arduinoId/flags", async function (req, res, next) {
   }
   try {
     if (req.body.isContainerEmpty == true) {
-      user.notifications.push(
-        new Object({
-          dogInfo: dog._id,
-          dogName: dog.name,
-          dogImage: dog.image,
-          title: "The container is about to run out",
-          body:
-            "Container is about to run out in 2 more days. Call the supplier to order a new Bonzo today.",
-          date: Date.now(),
-          isAlreadyBeenRead: false,
-        })
+      let newNotification = new Object({
+        dogInfo: dog._id,
+        dogName: dog.name,
+        dogImage: dog.image,
+        title: "The container is about to run out",
+        body:
+          "Container is about to run out in 2 more days. Call the supplier to order a new Bonzo today.",
+        date: new Date(Date.now()),
+        isAlreadyBeenRead: false,
+      });
+
+      isAlreadyPushed = user.notifications.find(
+        (notifi) =>
+          notifi.date.toDateString() === newNotification.date.toDateString()
       );
-      await user.save();
+      if (isAlreadyPushed == undefined) {
+        user.notifications.push(newNotification);
+        await user.save();
+      }
     }
     if (req.body.bowlWeight != null) {
       //save statistic
