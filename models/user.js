@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
       title: { type: String },
       body: { type: String },
       date: { type: Date },
-      isAlreadyBeenRead: { type: Boolean, default: false },
+      isAlreadyBeenRead: { type: Boolean },
     },
   ],
 });

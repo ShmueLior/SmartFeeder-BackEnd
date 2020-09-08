@@ -90,9 +90,9 @@ router.post(
   }
 );
 
-/*GET /api/v1.0/users/notification */
+/*GET /api/v1.0/users/notification /:index*/
 router.get(
-  "/notification",
+  "/notification/",
   passport.authenticate("jwt", { session: false }),
   async function (req, res, next) {
     try {
@@ -115,7 +115,7 @@ router.post(
         (x) => x._id == req.params.notifiationID
       );
       user.notifications[notiIndex].isAlreadyBeenRead = true;
-      await user.save;
+      await user.save();
       res.status(200).send(user.notifications[notiIndex]);
     } catch (err) {
       res.status(400).send(err.message);

@@ -72,6 +72,7 @@ router.post("/:arduinoId/flags", async function (req, res, next) {
           body:
             "Container is about to run out in 2 more days. Call the supplier to order a new Bonzo today.",
           date: Date.now(),
+          isAlreadyBeenRead: false,
         })
       );
       await user.save();
@@ -91,6 +92,7 @@ router.post("/:arduinoId/flags", async function (req, res, next) {
             title: "Alert!",
             body: `${dog.name} did not ate today at all`,
             date: Date.now(),
+            isAlreadyBeenRead: false,
           })
         );
       }
@@ -102,6 +104,7 @@ router.post("/:arduinoId/flags", async function (req, res, next) {
             title: "Good Day Alert!",
             body: `${dog.name} ate today all the food you gave him!`,
             date: Date.now(),
+            isAlreadyBeenRead: false,
           })
         );
       }
@@ -113,6 +116,7 @@ router.post("/:arduinoId/flags", async function (req, res, next) {
           title: "Day summary",
           body: `${dog.name} ate: ${howMuchFoodHeAteToDay} out of ${dog.howManyDropFoodToDay} gram today`,
           date: Date.now(),
+          isAlreadyBeenRead: false,
         })
       );
       dog.howManyDropFoodToDay = 0;
