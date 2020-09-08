@@ -92,12 +92,15 @@ router.post(
 
 /*GET /api/v1.0/users/notification /:index*/
 router.get(
-  "/notification/",
+  "/notification/:index",
   passport.authenticate("jwt", { session: false }),
   async function (req, res, next) {
     try {
       let user = await User.findOne({ _id: req.user._id });
-      res.status(200).send(user.notifications);
+      let index = req.params.index;
+      let notifications = user.notifications;
+      let notificationRes = notifications.slice(10 * index, 10 * index + 9);
+      res.status(200).send(notificationRes);
     } catch (err) {
       res.status(400).send(err.message);
     }
