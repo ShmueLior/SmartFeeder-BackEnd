@@ -107,7 +107,7 @@ router.post("/:arduinoId/flags", async function (req, res, next) {
         );
       }
 
-      if ((howMuchFoodHeAteToDay = dog.howManyDropFoodToDay)) {
+      if (howMuchFoodHeAteToDay === dog.howManyDropFoodToDay) {
         user.notifications.push(
           new Object({
             dogInfo: dog._id,
