@@ -6,6 +6,7 @@ const User = require("../models/user");
 const passport = require("passport");
 const multer = require("multer");
 const { use } = require("passport");
+const { Collection } = require("mongoose");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     let path = "./uploads/";
@@ -91,6 +92,7 @@ router.post(
       await dog.save();
       res.status(201).send(dog);
     } catch (err) {
+      console.log("The Error is:" + err);
       res.status(400).send(err.message);
       next();
     }
