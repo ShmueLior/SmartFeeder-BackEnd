@@ -86,6 +86,8 @@ router.post(
         gramPerMeal: req.body.gramPerMeal ? req.body.gramPerMeal : 200,
       });
 
+      console.log("New Dog From The App: ", dog);
+
       await dog.save();
       res.status(201).send(dog);
     } catch (err) {
