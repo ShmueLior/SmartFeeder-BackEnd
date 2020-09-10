@@ -20,7 +20,9 @@ router.post("/signup", async function (req, res, next) {
 router.post("/login", async function (req, res, next) {
   const user = await User.findOne({ email: req.body.email });
   if (user === null) {
-    return res.status(401).send("The user does not exist in the system");
+    return res
+      .status(401)
+      .send({ message: "The user does not exist in the system" });
   } else {
     const valid = await user.checkPassword(req.body.password);
     if (valid) {
